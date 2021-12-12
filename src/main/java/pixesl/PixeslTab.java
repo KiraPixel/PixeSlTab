@@ -13,7 +13,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 public final class PixeslTab extends JavaPlugin implements Listener {
 
-
     public void ChangeColor(Player player) {
 
         String chatWorldColor = getConfig().getString("chatWorldColor");
@@ -62,25 +61,21 @@ public final class PixeslTab extends JavaPlugin implements Listener {
     }
 
     public void CreateList(Player player){
-        String showTPS = getConfig().getString("showTPS");
-        String showPing = getConfig().getString("showPing");
-        if (showTPS == "false"){
-            if(showPing == "false"){
-                return;
-            }
+        String enable = getConfig().getString("enableTabText");
+        if (enable == "false"){
+            return;
         }
+
+        String headertext = getConfig().getString("header");
+        String footertext = getConfig().getString("footer");
         BukkitScheduler scheduler = Bukkit.getScheduler();
         scheduler.runTaskTimer(this,() -> {
             double tps = PTPS();
-            double mspt = tps / 100;
             int ping = player.getPing();
-            if (showTPS == "true"){
-                if(showPing == "true"){
-                    player.setPlayerListHeaderFooter("","TPS: "+ tps + " Ping: " + ping+"ms");
-                }
-                else player.setPlayerListHeaderFooter("","TPS: "+ tps);
-            }
-            else player.setPlayerListHeaderFooter("","Ping: " + ping+"ms");
+            String footer = footertext;
+            footer = footer.replace("%tps%", ("§f" + tps));
+            footer = footer.replace("%ping%", ("§f" + ping));
+            player.setPlayerListHeaderFooter(headertext,footer);
         },5,5);
 
     }

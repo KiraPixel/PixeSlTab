@@ -1,13 +1,18 @@
-showTPS: true
-showPing: true
 TABWorldColor: true
 chatWorldColor: true
 #true or false
 
+enableTabText: true
+header: 'you server name'
+footer: '§6TPS: %tps% §6Ping: %ping%'
+#tab text support formatting codes https://minecraft.fandom.com/wiki/Formatting_codes
+
+
+
 worldColor:
   world: 'DARK_GREEN'
   world_nether: 'RED'
-  world_the_end: 'DARK_PURPLE'
+  world_the_end: 'LIGHT_PURPLE'
 
 # AQUA
 # BLACK
