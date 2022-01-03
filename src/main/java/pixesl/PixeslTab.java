@@ -17,7 +17,6 @@ public final class PixeslTab extends JavaPlugin implements Listener {
 
         String chatWorldColor = getConfig().getString("chatWorldColor");
         String TABWorldColor = getConfig().getString("TABWorldColor");
-
         if (TABWorldColor == "false") {
             if (chatWorldColor == "false") {
                 return;
@@ -26,7 +25,6 @@ public final class PixeslTab extends JavaPlugin implements Listener {
 
         String world = player.getWorld().getName();
         ChatColor color;
-
         String path = String.join(".", "worldColor", world);
         String worldColor = getConfig().getString(path);
 
@@ -39,12 +37,10 @@ public final class PixeslTab extends JavaPlugin implements Listener {
             getServer().getLogger().info("[PixeslTAB]: "+ ChatColor.RED + "The wrong color is set for the " + world);
             worldColor = "WHITE";
         }
-
         color = ChatColor.valueOf(worldColor);
         if (!color.isColor()){
             color = ChatColor.WHITE;
         }
-
         if (TABWorldColor == "true") {
             player.setPlayerListName(color + player.getName());
         }
@@ -65,7 +61,6 @@ public final class PixeslTab extends JavaPlugin implements Listener {
         if (enable == "false"){
             return;
         }
-
         String headertext = getConfig().getString("header");
         String footertext = getConfig().getString("footer");
         BukkitScheduler scheduler = Bukkit.getScheduler();
@@ -84,7 +79,6 @@ public final class PixeslTab extends JavaPlugin implements Listener {
     public void onEnable() {
         saveDefaultConfig();
         getServer().getPluginManager().registerEvents(this, this);
-
         for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
             CreateList(onlinePlayers);
         }
@@ -96,7 +90,6 @@ public final class PixeslTab extends JavaPlugin implements Listener {
 
     @EventHandler
     public  void PTJoinEvent(PlayerJoinEvent event) {
-
         CreateList(event.getPlayer());
         ChangeColor(event.getPlayer());
     }
