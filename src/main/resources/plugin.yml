@@ -1,6 +1,0 @@
-name: PixeslTab
-version: '${project.version}'
-main: pixesl.PixeslTab
-api-version: 1.18
-authors: [ PixeSl ]
-description: simple tab
