@@ -2,6 +2,9 @@ package org.kirapixel.ptab;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,6 +12,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.jetbrains.annotations.NotNull;
 
 public final class ptab extends JavaPlugin implements Listener {
 
@@ -24,6 +28,8 @@ public final class ptab extends JavaPlugin implements Listener {
 
 
     public class pTabConfig {
+        String pluginPrefix = ("[PixeSlTab] ");
+        String pluginPrefixChat = (ChatColor.WHITE+"["+ChatColor.GOLD+"PixeSlTab"+ChatColor.WHITE+"] "+ChatColor.RESET);
         String chatWorldColor = getConfig().getString("chatWorldColor");
         String TABWorldColor = getConfig().getString("TABWorldColor");
         String enableTabText = getConfig().getString("enableTabText");
@@ -41,7 +47,7 @@ public final class ptab extends JavaPlugin implements Listener {
             try{
                 ChatColor.valueOf(worldColor);
             } catch (IllegalArgumentException e) {
-                getServer().getLogger().info("[PixeslTAB]: "+ ChatColor.RED + "The wrong color is set for the " + world);
+                getServer().getLogger().info(pluginPrefix + " "+ ChatColor.RED + "The wrong color is set for the " + world);
                 worldColor = "WHITE";
             }
 
@@ -108,6 +114,7 @@ public final class ptab extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        pTabConfig config = new pTabConfig();
         saveDefaultConfig();
         getServer().getPluginManager().registerEvents(this, this);
         for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
@@ -115,12 +122,33 @@ public final class ptab extends JavaPlugin implements Listener {
 
             new updaterCheck(this).getVersion(version -> {
                 if (this.getDescription().getVersion().equals(version)) {
-                    getLogger().info("[PixeSlTab] There is not a new update available.");
+                    getLogger().info( config.pluginPrefix + "There is not a new update available.");
                 } else {
-                    getLogger().info("[PixeSlTab] There is a new update available.");
+                    getLogger().info(config.pluginPrefix + "here is a new update available.");
                 }
             });
         }
+
+
+        getCommand("ptab").setExecutor(new CommandExecutor() {
+            @Override
+            public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+
+                if(args.length == 0){
+                    sender.sendMessage(config.pluginPrefixChat + ChatColor.GRAY +"/ptab reload.");
+                    return true;
+                }
+
+                if(args[0].equalsIgnoreCase("reload")){
+                    reloadConfig();
+                    CreateList(getServer().getPlayer(sender.getName()));
+                    sender.sendMessage(config.pluginPrefixChat + ChatColor.GRAY + "config reload. Please relogin to the server");
+                    return true;
+                }
+
+                return true;
+            }
+        });
     }
 
 
@@ -131,6 +159,7 @@ public final class ptab extends JavaPlugin implements Listener {
 
     @EventHandler
     public  void JoinEvent(PlayerJoinEvent event) {
+        pTabConfig config = new pTabConfig();
         Player player = event.getPlayer();
         CreateList(player);
         ChangeColor(player);
@@ -138,7 +167,7 @@ public final class ptab extends JavaPlugin implements Listener {
         if (player.isOp()) {
             new updaterCheck(this).getVersion(version -> {
                 if (!this.getDescription().getVersion().equals(version)) {
-                    player.sendMessage(ChatColor.GOLD + "[PixeSlTab] There is a new update available! " + ChatColor.RESET + version);
+                    player.sendMessage(config.pluginPrefixChat + "There is a new update available! " + ChatColor.RESET + version);
                 }
             });
         }

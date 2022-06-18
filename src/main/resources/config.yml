@@ -1,3 +1,6 @@
+#permisions: ptab.reload
+
+
 TABWorldColor: true
 chatWorldColor: true
 #true or false
