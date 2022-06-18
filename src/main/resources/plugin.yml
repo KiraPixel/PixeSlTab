@@ -1,0 +1,6 @@
+name: PixeSlTab
+version: '${project.version}'
+main: org.kirapixel.ptab.Ptab
+api-version: 1.19
+prefix: [ PixeSlTab ]
+authors: [ KiraPixel ]
