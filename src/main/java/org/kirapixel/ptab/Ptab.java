@@ -13,7 +13,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 public final class Ptab extends JavaPlugin implements Listener {
 
 
-
     public class pTabConfig {
         String chatWorldColor = getConfig().getString("chatWorldColor");
         String TABWorldColor = getConfig().getString("TABWorldColor");
