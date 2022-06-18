@@ -69,11 +69,10 @@ public final class Ptab extends JavaPlugin implements Listener {
 
         try {
             Class.forName("com.destroystokyo.paper.ParticleBuilder");
-            if (getConfig().getString("PaperSupport") == "true") {
-                double[] lasttps = getServer().getTPS();
-                double dtps = Math.round(lasttps[0] * 100.0D) / 100.0D;
-                return (int)dtps;
-            }
+            double[] lastTPS = getServer().getTPS();
+            double tps = Math.round(lastTPS[0] * 100.0D) / 100.0D;
+            return (int)tps;
+
         } catch (ClassNotFoundException ignored) {}
         return 0;
     }
