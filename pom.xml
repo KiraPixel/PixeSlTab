@@ -6,7 +6,7 @@
 
     <groupId>org.kirapixel</groupId>
     <artifactId>PixeSlTab</artifactId>
-    <version>1.19-rel.6</version>
+    <version>1.19-rel.7</version>
     <packaging>jar</packaging>
 
     <name>PixeSlTab</name>

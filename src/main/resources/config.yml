@@ -1,4 +1,5 @@
 #permisions: ptab.reload
+check-update: true
 
 
 TABWorldColor: true

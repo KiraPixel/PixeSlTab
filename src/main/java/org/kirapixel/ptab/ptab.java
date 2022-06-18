@@ -35,6 +35,7 @@ public final class ptab extends JavaPlugin implements Listener {
         String enableTabText = getConfig().getString("enableTabText");
         String headertext = getConfig().getString("header");
         String footertext = getConfig().getString("footer");
+        String checkUpdate = getConfig().getString("check-update");
 
         public ChatColor getWorldColor(String world){
             String path = String.join(".", "worldColor", world);
@@ -120,13 +121,14 @@ public final class ptab extends JavaPlugin implements Listener {
         for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
             CreateList(onlinePlayers);
 
-            new updaterCheck(this).getVersion(version -> {
-                if (this.getDescription().getVersion().equals(version)) {
-                    getLogger().info( config.pluginPrefix + "There is not a new update available.");
-                } else {
-                    getLogger().info(config.pluginPrefix + "here is a new update available.");
-                }
-            });
+
+        new updaterCheck(this).getVersion(version -> {
+            if (this.getDescription().getVersion().equals(version)) {
+                getLogger().info( config.pluginPrefix + "There is not a new update available.");
+            } else {
+                getLogger().info(config.pluginPrefix + "here is a new update available.");
+            }
+        });
         }
 
 
@@ -165,11 +167,13 @@ public final class ptab extends JavaPlugin implements Listener {
         ChangeColor(player);
 
         if (player.isOp()) {
-            new updaterCheck(this).getVersion(version -> {
-                if (!this.getDescription().getVersion().equals(version)) {
-                    player.sendMessage(config.pluginPrefixChat + "There is a new update available! " + ChatColor.RESET + version);
-                }
-            });
+            if (config.checkUpdate.equals("true")){
+                new updaterCheck(this).getVersion(version -> {
+                    if (!this.getDescription().getVersion().equals(version)) {
+                        player.sendMessage(config.pluginPrefixChat + "There is a new update available! " + ChatColor.RESET + version);
+                    }
+                });
+            }
         }
     }
 
