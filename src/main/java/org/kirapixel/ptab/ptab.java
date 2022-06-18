@@ -10,7 +10,17 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-public final class Ptab extends JavaPlugin implements Listener {
+public final class ptab extends JavaPlugin implements Listener {
+
+
+    public boolean isPaper(){
+        try {
+            Class.forName("com.destroystokyo.paper.ParticleBuilder");
+            return true;
+        } catch (ClassNotFoundException ignored) {
+            return false;
+        }
+    }
 
 
     public class pTabConfig {
@@ -45,58 +55,55 @@ public final class Ptab extends JavaPlugin implements Listener {
     }
 
 
+    @SuppressWarnings("deprecation")
     public void ChangeColor(Player player) {
         pTabConfig config = new pTabConfig();
         ChatColor color = config.getWorldColor(player.getWorld().getName());
 
-        if (config.TABWorldColor == "false") {
-            if (config.chatWorldColor == "false") {
+        if (config.TABWorldColor.equals("false")) {
+            if (config.chatWorldColor.equals("false")) {
                 return;
             }
         }
 
-        if (config.TABWorldColor == "true") {
+        if (config.TABWorldColor.equals("true")) {
             player.setPlayerListName(color + player.getName() + ChatColor.RESET);
         }
 
-        if (config.chatWorldColor == "true") {
+        if (config.chatWorldColor.equals("true")) {
             player.setDisplayName(color + player.getName() + ChatColor.RESET);
         }
     }
 
 
-    public double PTPS() {
 
-        try {
-            Class.forName("com.destroystokyo.paper.ParticleBuilder");
-            double[] lastTPS = getServer().getTPS();
-            double tps = Math.round(lastTPS[0] * 100.0D) / 100.0D;
-            return (int)tps;
-
-        } catch (ClassNotFoundException ignored) {}
+    public double pTPS() {
+         if (isPaper()){
+             double[] lastTPS = getServer().getTPS();
+             double tps = Math.round(lastTPS[0] * 100.0D) / 100.0D;
+             return (int)tps;
+        }
         return 0;
     }
 
 
+
     public void CreateList(Player player){
         pTabConfig config = new pTabConfig();
-
-        if (config.enableTabText == "false"){
+        if (config.enableTabText.equals("false")){
             return;
         }
-
         BukkitScheduler scheduler = Bukkit.getScheduler();
         scheduler.runTaskTimer(this,() -> {
-            double tps = PTPS();
+            double tps = pTPS();
             int ping = player.getPing();
             String footer = config.footertext;
             footer = footer.replace("%tps%", ("§f" + tps));
             footer = footer.replace("%ping%", ("§f" + ping));
+            //noinspection deprecation
             player.setPlayerListHeaderFooter(config.headertext,footer);
         },5,5);
-
     }
-
 
 
     @Override
@@ -123,7 +130,7 @@ public final class Ptab extends JavaPlugin implements Listener {
 
 
     @EventHandler
-    public  void PTJoinEvent(PlayerJoinEvent event) {
+    public  void JoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         CreateList(player);
         ChangeColor(player);
@@ -139,7 +146,7 @@ public final class Ptab extends JavaPlugin implements Listener {
 
 
     @EventHandler
-    public  void PTchangeWorld(PlayerChangedWorldEvent event) {
+    public  void ChangeWorld(PlayerChangedWorldEvent event) {
         ChangeColor(event.getPlayer());
     }
 
