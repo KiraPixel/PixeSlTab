@@ -9,9 +9,10 @@ chatWorldColor: true
 
 enableTabText: true
 header: 'you server name'
-footer: '§6Ping: %ping%'
-#You can add -> TPS: %tps% <- (Works only on paper)
+footer: '§6Ping: %ptab_ping%'
+#PlaceholderAPI Support https://www.spigotmc.org/resources/placeholderapi.6245/
 #tab text support formatting codes https://minecraft.fandom.com/wiki/Formatting_codes
+#Custom Placeholders: %ptab_ping% / %ptab_tps% (tps works only on paper)
 
 
 worldColor:

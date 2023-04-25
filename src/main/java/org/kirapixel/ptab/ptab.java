@@ -12,10 +12,12 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+
 import org.jetbrains.annotations.NotNull;
+import me.clip.placeholderapi.PlaceholderAPI;
+
 
 public final class ptab extends JavaPlugin implements Listener {
-
 
     public boolean isPaper(){
         try {
@@ -26,6 +28,13 @@ public final class ptab extends JavaPlugin implements Listener {
         }
     }
 
+    public boolean isPlaceHolder(){
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public class pTabConfig {
         String pluginPrefix = ("[PixeSlTab] ");
@@ -61,7 +70,6 @@ public final class ptab extends JavaPlugin implements Listener {
         }
     }
 
-
     @SuppressWarnings("deprecation")
     public void ChangeColor(Player player) {
         pTabConfig config = new pTabConfig();
@@ -82,7 +90,10 @@ public final class ptab extends JavaPlugin implements Listener {
         }
     }
 
+    //placeholder
 
+
+    //
 
     public double pTPS() {
          if (isPaper()){
@@ -93,7 +104,12 @@ public final class ptab extends JavaPlugin implements Listener {
         return 0;
     }
 
-
+    public String replacePlaceholders(Player player, String message) {
+        if(isPlaceHolder()) {
+            return PlaceholderAPI.setPlaceholders(player, message);
+        }
+        return message;
+    }
 
     public void CreateList(Player player){
         pTabConfig config = new pTabConfig();
@@ -104,14 +120,14 @@ public final class ptab extends JavaPlugin implements Listener {
         scheduler.runTaskTimer(this,() -> {
             double tps = pTPS();
             int ping = player.getPing();
-            String footer = config.footertext;
-            footer = footer.replace("%tps%", ("§f" + tps));
-            footer = footer.replace("%ping%", ("§f" + ping));
-            //noinspection deprecation
-            player.setPlayerListHeaderFooter(config.headertext,footer);
+            String header = replacePlaceholders(player, config.headertext);
+            String footer = replacePlaceholders(player, config.footertext);
+            footer = footer.replace("%ptab_tps%", ("§f" + tps));
+            footer = footer.replace("%ptab_ping%", ("§f" + ping));
+
+            player.setPlayerListHeaderFooter(header,footer);
         },5,5);
     }
-
 
     @Override
     public void onEnable() {
@@ -130,8 +146,6 @@ public final class ptab extends JavaPlugin implements Listener {
             }
         });
         }
-
-
         getCommand("ptab").setExecutor(new CommandExecutor() {
             @Override
             public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -153,11 +167,9 @@ public final class ptab extends JavaPlugin implements Listener {
         });
     }
 
-
     @Override
     public void onDisable() {
     }
-
 
     @EventHandler
     public  void JoinEvent(PlayerJoinEvent event) {
@@ -177,11 +189,8 @@ public final class ptab extends JavaPlugin implements Listener {
         }
     }
 
-
     @EventHandler
     public  void ChangeWorld(PlayerChangedWorldEvent event) {
         ChangeColor(event.getPlayer());
     }
-
 }
-
