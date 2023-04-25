@@ -181,9 +181,7 @@ public final class ptab extends JavaPlugin implements Listener {
         if (player.isOp()) {
             if (config.checkUpdate.equals("true")){
                 new updaterCheck(this).getVersion(version -> {
-                    if (!this.getDescription().getVersion().equals(version)) {
                         player.sendMessage(config.pluginPrefixChat + "There is a new update available! " + ChatColor.RESET + version);
-                    }
                 });
             }
         }
