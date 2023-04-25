@@ -9,7 +9,7 @@ chatWorldColor: true
 
 enableTabText: true
 header: 'you server name'
-footer: '§6Ping: %ping%'
+footer: '§6Ping: %ping% %server_tps% %server_name%'
 #You can add -> TPS: %tps% <- (Works only on paper)
 #tab text support formatting codes https://minecraft.fandom.com/wiki/Formatting_codes
 
