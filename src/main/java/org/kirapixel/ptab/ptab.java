@@ -15,7 +15,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import org.jetbrains.annotations.NotNull;
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 
 public final class ptab extends JavaPlugin implements Listener {
@@ -121,20 +120,17 @@ public final class ptab extends JavaPlugin implements Listener {
         scheduler.runTaskTimer(this,() -> {
             double tps = pTPS();
             int ping = player.getPing();
-            String footer = config.footertext;
-            String header = config.headertext;
-            footer = footer.replace("%tps%", ("§f" + tps));
-            footer = footer.replace("%ping%", ("§f" + ping));
-            footer = replacePlaceholders(player, footer);
-            player.setPlayerListHeaderFooter(config.headertext,footer);
+            String header = replacePlaceholders(player, config.headertext);
+            String footer = replacePlaceholders(player, config.footertext);
+            footer = footer.replace("%ptab_tps%", ("§f" + tps));
+            footer = footer.replace("%ptab_ping%", ("§f" + ping));
+
+            player.setPlayerListHeaderFooter(header,footer);
         },5,5);
     }
 
     @Override
     public void onEnable() {
-        if (isPlaceHolder()) {
-            new PTABPlaceholderAPI(this).register();
-        }
         pTabConfig config = new pTabConfig();
         saveDefaultConfig();
         getServer().getPluginManager().registerEvents(this, this);
@@ -173,8 +169,6 @@ public final class ptab extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        if (isPlaceHolder()) {
-        }
     }
 
     @EventHandler
